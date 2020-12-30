@@ -2,12 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from 'axios'
 import './plugin/iview'
-
-axios.defaults.baseURL = '/api'  //关键代码
+import {Http} from "@/http";
 
 Vue.config.productionTip = false
+Vue.prototype.$Http = Http;
 
 new Vue({
   router,
