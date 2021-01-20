@@ -18,6 +18,7 @@
           </FormItem>
           <FormItem>
             <Button type="primary" @click="handleSubmit('formInline')" long>登录</Button>
+<!--            <Button type="primary" @click="testToken" long>测试</Button>-->
           </FormItem>
         </Form>
       </div>
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+import {encrypt} from "@/utils";
+
 export default {
   name: "LoginForm",
   data() {
@@ -36,28 +39,46 @@ export default {
       },
       ruleInline: {
         user: [
-          {required: false, message: 'Please fill in the user name', trigger: 'blur'}
+          {required: true, message: '请输入用户名', trigger: 'blur'}
         ],
         password: [
-          {required: false, message: 'Please fill in the password.', trigger: 'blur'},
+          {required: true, message: '请输入密码', trigger: 'blur'},
         ]
       }
     }
   },
   methods: {
     handleSubmit(name) {
-      this.$Http.login();
       const data = {
-        username:this.formInline.user,
-        password:this.formInline.password
+        username: this.formInline.user,
+        password: encrypt(this.formInline.password)
       }
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
-        } else {
-          this.$Message.error('Fail!');
+          this.$Http.login(data).then(data => {
+            const {code, msg} = data;
+            if (code !== 0) {
+              this.$Message.success(msg);
+              console.log(data?.token)
+              sessionStorage.setItem('token', data?.token);
+              this.$router.push('/home');
+            }else {
+              this.$Message.error(msg);
+            }
+          }).catch(reason => {
+            console.log(reason)
+          });
         }
       })
+    },
+    testToken() {
+      const data = {
+        username: this.formInline.user,
+        password: this.formInline.password
+      }
+      this.$Http.testInterface(data).then(value => {
+        console.log(value)
+      });
     }
   }
 }

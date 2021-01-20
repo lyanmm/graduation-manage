@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "upload": "rsync -avz /Users/lyanm/Documents/graduation/manage/manage/dist/* ubuntu@159.75.20.143:/var/www/html"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "view-design": "^4.4.0",
     "vue": "^2.6.11",

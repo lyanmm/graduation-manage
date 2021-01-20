@@ -1,5 +1,8 @@
-import {login} from "@/http/login";
+import {login,logout} from "./log";
+import {testInterface} from "./testInterface";
 
 export const Http = {
-  login
+  login,
+  logout,
+  testInterface
 }
